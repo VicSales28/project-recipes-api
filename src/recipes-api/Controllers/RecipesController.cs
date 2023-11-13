@@ -35,10 +35,12 @@ public class RecipesController : ControllerBase
     public IActionResult Get(string name)
     {
         var recipe = _service.GetRecipe(name);
+
         if (recipe == null)
         {
             return NotFound();
         }
+
         return Ok(recipe);
     }
 

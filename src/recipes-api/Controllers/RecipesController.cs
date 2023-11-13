@@ -93,6 +93,24 @@ public class RecipesController : ControllerBase
     [HttpDelete("{name}")]
     public IActionResult Delete(string name)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var recipeExists = _service.RecipeExists(name);
+
+            if (!recipeExists)
+            {
+                return BadRequest();
+                throw new ArgumentException($"Recipe Not Found: {name}");
+            }
+
+            _service.DeleteRecipe(name);
+
+            return NoContent();
+        }
+        catch (ArgumentException exception)
+        {
+            Console.WriteLine(exception.Message);
+            return BadRequest(exception.Message);
+        }
     }
 }
